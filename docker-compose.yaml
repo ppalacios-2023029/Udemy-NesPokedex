@@ -1,11 +1,23 @@
+version: "3.8"
 
-  services:
-    db:
-      image: mongo:5 
-      restart: always
-      ports:
-        - 27017:27017
-      environment:
-        MONGODB_DATABASE: nest-pokemon
-      volumes:
-        - ./mongo:/data/db
+services:
+  app:
+    build: .
+    container_name: nest-app
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      - MONGODB=mongodb://db:27017/nest-pokemon
+
+  db:
+    image: mongo:5
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: nest-pokemon
+    volumes:
+      - ./mongo:/data/db
